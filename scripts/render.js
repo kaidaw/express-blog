@@ -2,6 +2,7 @@ export default function render(data) {
   document.body.innerHTML = "";
   var newPost = document.createElement("div");
   var post = document.createElement("button");
+
   var postMe = document.createTextNode("POST");
   post.appendChild(postMe);
   var inputField = document.createElement("input");
@@ -147,6 +148,14 @@ export default function render(data) {
     blogs.appendChild(image);
 
     blogs.appendChild(spacer);
+    post.className = "button";
+    del.className = "button";
+    edit.className = "button";
+    name.className = "button";
+    sign.className = "button";
+    inputField.className = "inputField";
+    editBox.className = "editBox";
+    spacer.className = "spacer";
   }
   document.body.appendChild(blogs);
 }

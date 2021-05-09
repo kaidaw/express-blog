@@ -1,5 +1,5 @@
 import render from "./render.js";
-//import _ from "lodash";
+import _ from "lodash";
 
 fetch("/api/blog")
   .then((response) => {

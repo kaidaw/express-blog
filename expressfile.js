@@ -5,6 +5,17 @@ const port = 3000;
 const MongoClient = require("mongodb").MongoClient;
 const url = "mongodb://127.0.0.1:27017";
 
+const webpack = require("webpack");
+const webpackDevMiddleware = require("webpack-dev-middleware");
+const config = require("./webpack.config.js");
+const compiler = webpack(config);
+
+app.use(
+  webpackDevMiddleware(compiler, {
+    publicPath: config[1].output.publicPath,
+  })
+);
+
 const dbName = "blogPosts";
 let db;
 
@@ -32,13 +43,34 @@ function getFile() {
 
 /* getFile(); */
 
-let stasis = express.static("images");
-let styles = express.static("styles");
-let script = express.static("scripts");
+let stasis = express.static("./images");
+let styles = express.static("./styles");
+let script = express.static("./scripts");
+let dist = express.static("./dist");
+
+//the above code returns a function which, used in conjunction with app.use, links a directory
+// on the filesystem to a url so that when the url gets called, the filepath is read
+
+function logHel(req, res, next) {
+  console.log("hel", req.path);
+  next();
+}
+
+app.use(logHel);
+
+function x(tobelogged) {
+  return function y(req, res, next) {
+    console.log(tobelogged, req.path);
+    next();
+  };
+}
+
+app.use(x("Dont go to this url: "));
 
 app.use("/scripts", script);
 app.use("/styles", styles);
 app.use("/images", stasis);
+app.use("/dist", dist);
 
 MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
   let blogPosts;
@@ -60,11 +92,23 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
     res.send(`
             <head> <link rel="stylesheet" href="/styles/style.css"></head>
             <body></body>
-            <script src = '/scripts/script.js' type='module'>
+            <script src = '/dist/main.js' type='module'>
             </script>
             <style src = '/styles/style.css'>
             </style>
             `);
+  });
+  app.get("/reactBlog", (req, res, next) => {
+    res.send(
+      `
+    <head> <link rel="stylesheet" href="/styles/style.css"></head>
+    <body><div id="root"></div></body>
+    <script src = '/dist/main2.js' type='module'>
+    </script>
+    <style src = '/styles/style.css'>
+    </style>
+    `
+    );
   });
   app.get("/api/blog/", (req, res, next) => {
     // let blogs = ``;

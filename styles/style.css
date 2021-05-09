@@ -1,16 +1,32 @@
 .title {
-  color: red;
+  color: white;
+  background-color: grey;
+  width: 500px;
 }
 .body {
-  color: green;
+  color: white;
+  background-color: grey;
+  width: 500px;
 }
 .author {
-  color: blue;
-}
-.spacer {
-  color: pink;
+  color: grey;
 }
 
 .blog {
   color: purple;
+}
+.button {
+  border-radius: 3px;
+  background-color: grey;
+  color: white;
+}
+.editBox {
+}
+.inputField {
+}
+.spacer {
+  height: 15px;
+  width: 500px;
+  background-color: black;
+  color: green;
 }
