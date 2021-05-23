@@ -10,7 +10,8 @@
     "script": "/scripts/script.js",
     "start": "nodemon expressfile.js",
     "webpack": "npx webpack --config webpack.config.js",
-    "server": "node expressfile.js"
+    "server": "node expressfile.js",
+    "lint": "eslint expressfile.js scripts/**"
   },
   "author": "",
   "license": "ISC",
