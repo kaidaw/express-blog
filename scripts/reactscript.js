@@ -1,8 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 
 function App() {
   let [blogs, setBlogs] = React.useState([]);
+  let [editMode, setEditMode] = React.useState({});
+
   React.useEffect(() => {
     fetch("/api/blog")
       .then((response) => {
@@ -61,28 +64,33 @@ function NewPost({ setBlogs }) {
   );
 }
 
-function OldPosts({ blogs, setBlogs }) {
+function OldPosts({ blogs, setBlogs, editMode, setEditMode }) {
   let [name, setName] = React.useState("");
   let [author, setAuthor] = React.useState("");
   let [body, setBody] = React.useState("");
-  let [editMode, setEditMode] = React.useState(false);
+
+  // let obj = { one: 1 };
+
   return blogs.map((blog, i) => {
     return (
-      <div>
-        <div>
-          _________________________________________________________________
-        </div>
-        <div>
-          _________________________________________________________________
+      <div key={blog.id}>
+        <div className="divider">
+          <div>
+            _________________________________________________________________
+          </div>
+          <div>
+            _________________________________________________________________
+          </div>
         </div>
         <button
+          id={i}
           onClick={() => {
-            setEditMode(!editMode);
+            setEditMode({ ...editMode, [blog.id]: !editMode[blog.id] });
           }}
         >
           EDIT
         </button>
-        {editMode ? (
+        {editMode[blog.id] ? (
           <div>
             <div>
               <input
