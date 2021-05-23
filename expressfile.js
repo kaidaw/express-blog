@@ -226,3 +226,18 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
 });
 
 app.listen(port, () => console.log(`listening on port ${port}`));
+
+let friendsList = ["one", "two", "three"];
+
+app.get("/friends", (req, res) => {
+  res.send(JSON.stringify(friendsList));
+});
+/* app.get("/api/blog/", (req, res, next) => {
+    // let blogs = ``;
+    // for (let blog of blogPosts) {
+    //   blogs += `<div>Blog: ${blog.title}</div><div>By: ${blog.author}</div><div>${blog.body}</div>`;
+    // }
+    res.header("Content-Type", "text/html");
+
+    res.send(JSON.stringify(blogPosts));
+  }); */
