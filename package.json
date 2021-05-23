@@ -35,6 +35,8 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "css-loader": "^5.2.4",
+    "eslint": "^7.27.0",
+    "eslint-plugin-react": "^7.23.2",
     "mini-css-extract-plugin": "^1.6.0",
     "style-loader": "^2.0.0",
     "webpack": "^5.35.1",
