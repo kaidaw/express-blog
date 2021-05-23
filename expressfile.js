@@ -87,7 +87,7 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
   });
 
   //fetches the blog data
-  app.get("/displayBlog", (req, res, next) => {
+  app.get("/displayBlog", (req, res) => {
     res.header("Content-Type", "text/html");
     res.send(`
             <head> <link rel="stylesheet" href="/styles/style.css"></head>
@@ -98,7 +98,7 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
             </style>
             `);
   });
-  app.get("/reactBlog", (req, res, next) => {
+  app.get("/reactBlog", (req, res) => {
     res.send(
       `
     <head> <link rel="stylesheet" href="/styles/style.css"></head>
@@ -110,7 +110,7 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
     `
     );
   });
-  app.get("/api/blog/", (req, res, next) => {
+  app.get("/api/blog/", (req, res) => {
     // let blogs = ``;
     // for (let blog of blogPosts) {
     //   blogs += `<div>Blog: ${blog.title}</div><div>By: ${blog.author}</div><div>${blog.body}</div>`;
@@ -119,7 +119,7 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
 
     res.send(JSON.stringify(blogPosts));
   });
-  app.get("/blog/", (req, res, next) => {
+  app.get("/blog/", (req, res) => {
     let blogs = `<head> <link rel="stylesheet" href="/styles/style.css"></head>`;
     for (let blog of blogPosts) {
       blogs += `<div class = 'title'>Blog: ${blog.title}</div><div class = 'author'>By: ${blog.author}</div><div class = 'blog'>${blog.body}</div><img src = ${blog.image}></img>`;
@@ -127,7 +127,7 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
     res.header("Content-Type", "text/html");
     res.write(blogs);
   });
-  app.delete("/blog/api", (req, res, next) => {
+  app.delete("/blog/api", (req, res) => {
     blogs
       .deleteOne({ id: req.query.del })
       .then((data) => {
@@ -159,7 +159,7 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
     //saveFile(blogPosts);
     //res.send();
   });
-  app.post("/blog/api/", (req, res, next) => {
+  app.post("/blog/api/", (req, res) => {
     if (req.query.newText) {
       //blogPosts.unshift(JSON.parse(req.query.newText));
       blogs.insertMany([JSON.parse(req.query.newText)]).then(() => {
