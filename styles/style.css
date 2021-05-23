@@ -30,3 +30,38 @@
   background-color: black;
   color: green;
 }
+
+.banner {
+  border: 1px solid red;
+}
+
+.postbar {
+  border: 1px solid blue;
+}
+
+.deletebutton {
+  border: 1px solid green;
+}
+
+.blogtitle {
+  border: 1px solid yellow;
+}
+
+.blogauthor {
+  border: 1px solid purple;
+}
+
+.blogbody {
+  border: 1px solid pink;
+}
+
+.submit {
+  border: 1px solid turquoise;
+}
+
+.divider {
+  border: 1px solid orange;
+}
+
+.img {
+}
