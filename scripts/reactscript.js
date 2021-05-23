@@ -13,24 +13,74 @@ function App() {
       })
       .then((info) => {
         setBlogs(info);
+      })
+      .then(() => {
+        let editTracker = {};
+        for (let blog of blogs) {
+          editTracker[blog.id] = false;
+        }
+        setEditMode(editTracker);
       });
   }, []);
 
   return (
     <div>
+      <Banner></Banner>
       <NewPost setBlogs={setBlogs}></NewPost>
-      <OldPosts blogs={blogs} setBlogs={setBlogs}></OldPosts>
+      <OldPosts
+        blogs={blogs}
+        setBlogs={setBlogs}
+        editMode={editMode}
+        setEditMode={setEditMode}
+      ></OldPosts>
+      <Friends></Friends>
     </div>
   );
 }
 
+NewPost.propTypes = { setBlogs: PropTypes.function };
+
+OldPosts.propTypes = {
+  blogs: PropTypes.array,
+  setBlogs: PropTypes.function,
+  editMode: PropTypes.object,
+  setEditMode: PropTypes.function,
+};
+
 ReactDOM.render(<App></App>, document.getElementById("root"));
+
+function Banner() {
+  return <div className="banner">BLOG</div>;
+}
+
+function useFriends() {
+  let [friends, setFriends] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch("/friends")
+      .then((resp) => {
+        return resp.json();
+      })
+      .then((data) => {
+        setFriends(data);
+      });
+  }, []);
+  return friends;
+}
+
+function Friends() {
+  let friends = useFriends();
+
+  return friends.map((entry, i) => {
+    return <div key={i}>FRIEND: {entry}</div>;
+  });
+}
 
 function NewPost({ setBlogs }) {
   let [postText, setPostText] = React.useState("");
   let newBlogText = "";
   return (
-    <div>
+    <div className="postbar">
       <button
         onClick={() => {
           let newId = JSON.stringify(Math.random());
@@ -99,6 +149,7 @@ function OldPosts({ blogs, setBlogs, editMode, setEditMode }) {
                 }}
               ></input>
               <button
+                className="submit"
                 onClick={() => {
                   fetch(`/blog/api/?edit=${blog.id}&name=${name}`, {
                     method: "post",
@@ -121,6 +172,7 @@ function OldPosts({ blogs, setBlogs, editMode, setEditMode }) {
                 }}
               ></input>
               <button
+                className="submit"
                 onClick={() => {
                   fetch(`/blog/api/?edit=${blog.id}&sign=${author}`, {
                     method: "post",
@@ -143,6 +195,7 @@ function OldPosts({ blogs, setBlogs, editMode, setEditMode }) {
                 }}
               ></input>
               <button
+                className="submit"
                 onClick={() => {
                   fetch(`/blog/api/?edit=${blog.id}&update=${body}`, {
                     method: "post",
@@ -158,10 +211,21 @@ function OldPosts({ blogs, setBlogs, editMode, setEditMode }) {
                 EDIT BLOG
               </button>
             </div>
+            <button
+              onClick={() => {
+                for (let button of document.getElementsByClassName("submit")) {
+                  button.click();
+                }
+                setEditMode({ ...editMode, [blog.id]: !editMode[blog.id] });
+              }}
+            >
+              SUBMIT ALL CHANGES
+            </button>
           </div>
         ) : null}
-        <div>
+        <div className="blogtitle">
           <button
+            className="deletebutton"
             onClick={() => {
               fetch(`/blog/api/?del=${blog.id}`, { method: "delete" })
                 .then((response) => {
@@ -176,8 +240,9 @@ function OldPosts({ blogs, setBlogs, editMode, setEditMode }) {
           </button>
           Title: {blog.title}
         </div>
-        <div>Author: {blog.author}</div>
-        <div>Blog: {blog.body}</div>
+        <div className="blogauthor">Author: {blog.author}</div>
+        <div className="blogbody">Blog: {blog.body}</div>
+        <img className="img" src={blog.image} />
       </div>
     );
   });
